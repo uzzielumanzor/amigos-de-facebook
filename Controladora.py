@@ -3,6 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from Persona import Persona
 import operator
+import time
 
 
 def mVecino(G, nodo):
@@ -117,21 +118,21 @@ def setCover(G):
     temp = None
     cofre = []
     nodos_ordenados = sorted(G.nodes())
-    clique_sublistas = []
+    set_sublistas = []
     index = diccionario(nodos_ordenados)
 
     for indice_nodo, nodo in enumerate(nodos_ordenados):
-        clique_sublista = {}
+        set_sublista = {}
 
-        clique_sublista['sb'] = nodo
-        clique_sublista['cn'] = mVecino(G, nodo)
-        clique_sublistas.append(clique_sublista)
+        set_sublista['sb'] = nodo
+        set_sublista['cn'] = mVecino(G, nodo)
+        set_sublistas.append(set_sublista)
 
     while sum(1 for condition in index.values() if condition) < len(nodos_ordenados):
-        v = verificador(index, clique_sublistas)
+        v = verificador(index, set_sublistas)
         v = max(v.iteritems(), key=operator.itemgetter(1))[0]
 
-        for i in clique_sublistas:
+        for i in set_sublistas:
 
             if i["sb"] == v:
                 index[i["sb"]] = True
@@ -180,12 +181,13 @@ def clique(G):
 
 def main():
     """Funcion controladora"""
+    start_time = time.time()
     # personas con defectos , ;
     personas = open('n2.txt', 'r').read().splitlines()
     # personas sin defectos
     personas = pLista(personas)
     # obtener usuario
-    usuario = oUsuario(personas, raw_input("Ingrese su nombre: "))
+    usuario = oUsuario(personas, "daniel")
     # obtener amigos del usuario
     amigos = getAmigos(personas, usuario.friends)
     tuplas = sacarEd(amigos)
@@ -196,8 +198,8 @@ def main():
     #G2 = nx.Graph()
     # G2.add_edges_from(tuplas2)
 
-    nx.draw_circular(G, node_size=3000, node_color='r')
-    plt.show()
+    #nx.draw_circular(G, node_size=3000, node_color='r')
+    #plt.show()
     #nx.draw_circular(G2, node_size=3000, node_color='r')
     # plt.show()
 
@@ -206,9 +208,11 @@ def main():
     print "Sublista Clique"
     print cli
 
-    print "Sublista Vertex Cover"
+    print "Sublista Set Cover"
     print setCover(G)
 
+    tiempo = time.time() - start_time
+    print "Tiempo de ejecucion: ", tiempo
 
 if __name__ == '__main__':
     main()
