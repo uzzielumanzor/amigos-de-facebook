@@ -183,7 +183,7 @@ def main():
     """Funcion controladora"""
     start_time = time.time()
     # personas con defectos , ;
-    personas = open('n2.txt', 'r').read().splitlines()
+    personas = open('grafo.txt', 'r').read().splitlines()
     # personas sin defectos
     personas = pLista(personas)
     # obtener usuario
